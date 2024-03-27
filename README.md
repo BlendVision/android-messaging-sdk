@@ -81,31 +81,42 @@ dependencies {
  ```
     private val eventListener = object : EventListener {
         
+        // ConnectionState.CONNECTING - Connecting
+        // ConnectionState.CONNECTED - Connected successfully
+        // ConnectionState.DISCONNECTING - Disconnecting
+        // ConnectionState.DISCONNECTED - Disconnected successfully
         override fun onChatRoomConnectionChanged(connectionState: ConnectionState) {
-            // ConnectionState.CONNECTING - Connecting
-            // ConnectionState.CONNECTED - Connected successfully
-            // ConnectionState.DISCONNECTING - Disconnecting
-            // ConnectionState.DISCONNECTED - Disconnected successfully
+            //When the connectionState is ConnectionState.CONNECTED, you can retrieve the chatroomInfo from the connectionState.
         }
         
+        //This method is optional and can be overridden if needed.
         override fun onMuteChatRoomSuccess() {}
 
+        //This method is optional and can be overridden if needed.
         override fun onUnmuteChatRoomSuccess() {}
 
+        //This method is optional and can be overridden if needed.
         override fun onBlockChatRoomUserSuccess(userId: String) {}
 
+        //This method is optional and can be overridden if needed.
         override fun onUnblockChatRoomUserSuccess(userId: String) {}
 
-        override fun onGetMessagesSuccess(messages: List<Message>) {}
+        //This method is optional and can be overridden if needed.
+        override fun onGetMessagesSuccess(messages: List<MessageInfo>) {}
 
+        //This method is optional and can be overridden if needed.
         override fun onDeleteMessageSuccess(messageId: String) {}
 
+        //This method is optional and can be overridden if needed.
         override fun onPinMessageSuccess() {}
 
+        //This method is optional and can be overridden if needed.
         override fun onUnpinMessageSuccess() {}
 
+        //This method is optional and can be overridden if needed.
         override fun onUpdateViewerInfoSuccess() {}
 
+        //This method is optional and can be overridden if needed.
         override fun onUpdateUserSuccess() {}
 
         override fun onError(exception: MessageException) {
@@ -151,39 +162,31 @@ dependencies {
  messageManager.disconnect()
  ```
 
-## Variables in BVMessageManager
-1. deviceId:
- a random UUID of this device, will be created when build a instance of BVMessageManager
-2. clientId:
- Client's id of current connection, will be created when `connect()` success.
-3. customName:
- Client's name of current connection, will be created when `connect()` success.
-
 ## Others BVMessageManager API
 
 ```kotlin
 
-// When mute custom is successful, will be received in the `onMuteChatRoomSuccess` method.
+// When mute the chat room is successful, will be received in the `onMuteChatRoomSuccess` method.
 // 
-messageManager.mute(customName)
+messageManager.muteChatRoom()
 
-// When unmute custom is successful, will be received in the `onUnmuteChatRoomSuccess` method.
-messageManager.unmute(customName)
+// When unmute the chat room is successful, will be received in the `onUnmuteChatRoomSuccess` method.
+messageManager.unmuteChatRoom()
 
 // When block user is successful, will be received in the `onBlockChatRoomUserSuccess` method.
-messageManager.blockUser(userId, userDeviceId, userCustomName, actionTakerName)
+messageManager.blockUser(userId, userDeviceId, userCustomName)
 
 // When unblock user is successful, will be received in the `onUnblockChatRoomUserSuccess` method.
-messageManager.unblockUser(userId, actionTakerName)
+messageManager.unblockUser(userId)
 
 // When delete message is successful, will be received in the `onDeleteMessageSuccess` method.
 messageManager.deleteMessage(messageId)
 
 // When pin message is successful, will be received in the `onPinMessageSuccess` method.
-messageManager.pinMessage(messageId, message, messageSenderId, messageSenderDeviceId, messageSenderName, actionTakerName)
+messageManager.pinMessage(messageId, text, userId, userDeviceId, userCustomName)
 
 // When unpin message is successful, will be received in the `onUnpinMessageSuccess` method.
-messageManager.unpinMessage(messageId, actionTakerName)
+messageManager.unpinMessage(messageId)
 
 // When update viewer info is successful, will be received in the `onUpdateViewerInfoSuccess` method.
 messageManager.updateViewerInfo(enabled, customName)
